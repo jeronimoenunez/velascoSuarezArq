@@ -1,0 +1,137 @@
+---
+interface Project {
+  title: string;
+  region: string;
+  type: string;
+  context: string;
+  image: string;
+}
+
+const { projects } = Astro.props;
+
+const chunked: Project[][] = [];
+for (let i = 0; i < projects.length; i += 4) {
+  chunked.push(projects.slice(i, i + 4));
+}
+---
+
+{chunked.map((group) => (
+  <section class="grid-wrapper">
+    <div class="layout">
+      {group[0] && (
+        <div class="A grid-item">
+          <img src={group[0].image} alt={group[0].title} loading="lazy" />
+          <div class="overlay">
+            <h3>{group[0].title}</h3>
+            <span>{group[0].region} — {group[0].type} — {group[0].context}</span>
+          </div>
+        </div>
+      )}
+      {group[1] && (
+        <div class="B grid-item">
+          <img src={group[1].image} alt={group[1].title} loading="lazy" />
+          <div class="overlay">
+            <h3>{group[1].title}</h3>
+            <span>{group[1].region} — {group[1].type} — {group[1].context}</span>
+          </div>
+        </div>
+      )}
+      {group[2] && (
+        <div class="BBB grid-item">
+          <img src={group[2].image} alt={group[2].title} loading="lazy" />
+          <div class="overlay">
+            <h3>{group[2].title}</h3>
+            <span>{group[2].region} — {group[2].type} — {group[2].context}</span>
+          </div>
+        </div>
+      )}
+      {group[3] && (
+        <div class="AAA grid-item">
+          <img src={group[3].image} alt={group[3].title} loading="lazy" />
+          <div class="overlay">
+            <h3>{group[3].title}</h3>
+            <span>{group[3].region} — {group[3].type} — {group[3].context}</span>
+          </div>
+        </div>
+      )}
+    </div>
+  </section>
+))}
+
+<style>
+.grid-wrapper {
+  width: 100%;
+  margin-bottom: 2rem;
+}
+
+.layout {
+  display: grid;
+  gap: 24px;
+  grid-template-columns: repeat(8, 1fr); /* 8 columnas de igual ancho */
+  grid-template-rows: repeat(4, minmax(0, 1fr));
+  grid-template-areas:
+    "A A A A A A B B"    /* La primera fila: A ocupa 6 columnas, B ocupa 2 */
+    "A A A A A A B B"
+    "BBB BBB AAA AAA AAA AAA AAA AAA" /* La tercera fila: BBB ocupa 2, AAA ocupa 6 */
+    "BBB BBB AAA AAA AAA AAA AAA AAA";
+}
+
+.A { grid-area: A; }
+.B { grid-area: B; }
+.BBB { grid-area: BBB; }
+.AAA { grid-area: AAA; }
+
+.A, .B, .BBB, .AAA {
+  position: relative;
+  overflow: hidden;
+  border-radius: 2px;
+  aspect-ratio: auto;
+}
+
+.grid-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  width: 100%;
+  padding: 1rem;
+  box-sizing: border-box;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  gap: 1rem;
+}
+
+.overlay span {
+  font-weight: 300;
+  opacity: 0.9;
+}
+
+@media (max-width: 768px) {
+  .layout {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "A"
+      "B"
+      "BBB"
+      "AAA";
+    grid-auto-rows: 200px;
+  }
+
+  .A, .B, .BBB, .AAA {
+    grid-area: unset;
+    aspect-ratio: auto;
+  }
+}
+</style>

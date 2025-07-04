@@ -1,0 +1,319 @@
+---
+interface Project {
+  title: string;
+  region: string;
+  type: string;
+  context: string;
+  image: string;
+}
+
+const { projects } = Astro.props;
+
+// Función para obtener valores únicos de una propiedad
+// Se asegura de que se conviertan a string y se ordenen alfabéticamente
+function getUniqueValues(projects: Project[], key: keyof Project): string[] {
+  const values = projects.map(p => String(p[key])); // Convertir a string explícitamente
+  return [...new Set(values)].sort((a, b) => a.localeCompare(b)); // Usar localeCompare para ordenamiento correcto de strings
+}
+
+const uniqueRegions = getUniqueValues(projects, 'region');
+const uniqueTypes = getUniqueValues(projects, 'type');
+const uniqueContexts = getUniqueValues(projects, 'context');
+---
+
+<section class="project-list-wrapper" x-data="projectFilter()">
+  <div class="active-filters" x-show="activeFilters.length">
+    <span class="label">Filter:</span>
+    <template x-for="(filter, i) in activeFilters" :key="i">
+      <span class="chip">
+        <span x-text="filter.label"></span>
+        <button @click="removeFilter(i)">&times;</button>
+      </span>
+    </template>
+    <button class="clear-all" @click="clearAll">Clear All ×</button>
+  </div>
+
+  <table class="project-table">
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th
+          class="filterable-header"
+          @click.stop="toggleDropdown('region')"
+          x-ref="regionHeader"
+        >
+          Región <span class="arrow-down" :class="{ 'arrow-up': openDropdown === 'region' }">&#9660;</span>
+          <div
+            x-show="openDropdown === 'region'"
+            @click.outside="openDropdown = null"
+            x-transition.origin.top.left
+            class="dropdown-menu"
+          >
+            <ul>
+              <template x-for="option in uniqueRegions" :key="option">
+                <li
+                  @click.stop="toggleFilter('region', option)"
+                  :class="{ 'active': isActive('region', option) }"
+                  x-text="option"
+                ></li>
+              </template>
+            </ul>
+          </div>
+        </th>
+        <th
+          class="filterable-header"
+          @click.stop="toggleDropdown('type')"
+          x-ref="typeHeader"
+        >
+          Tipo <span class="arrow-down" :class="{ 'arrow-up': openDropdown === 'type' }">&#9660;</span>
+          <div
+            x-show="openDropdown === 'type'"
+            @click.outside="openDropdown = null"
+            x-transition.origin.top.left
+            class="dropdown-menu"
+          >
+            <ul>
+              <template x-for="option in uniqueTypes" :key="option">
+                <li
+                  @click.stop="toggleFilter('type', option)"
+                  :class="{ 'active': isActive('type', option) }"
+                  x-text="option"
+                ></li>
+              </template>
+            </ul>
+          </div>
+        </th>
+        <th
+          class="filterable-header"
+          @click.stop="toggleDropdown('context')"
+          x-ref="contextHeader"
+        >
+          Contexto <span class="arrow-down" :class="{ 'arrow-up': openDropdown === 'context' }">&#9660;</span>
+          <div
+            x-show="openDropdown === 'context'"
+            @click.outside="openDropdown = null"
+            x-transition.origin.top.left
+            class="dropdown-menu"
+          >
+            <ul>
+              <template x-for="option in uniqueContexts" :key="option">
+                <li
+                  @click.stop="toggleFilter('context', option)"
+                  :class="{ 'active': isActive('context', option) }"
+                  x-text="option"
+                ></li>
+              </template>
+            </ul>
+          </div>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <template x-for="project in filteredProjects" :key="project.title">
+        <tr>
+          <td x-text="project.title"></td>
+          <td
+            x-text="project.region"
+            @click="toggleFilter('region', project.region)"
+            :class="{ 'filterable-cell': true, 'active': isActive('region', project.region) }"
+          ></td>
+          <td
+            x-text="project.type"
+            @click="toggleFilter('type', project.type)"
+            :class="{ 'filterable-cell': true, 'active': isActive('type', project.type) }"
+          ></td>
+          <td
+            x-text="project.context"
+            @click="toggleFilter('context', project.context)"
+            :class="{ 'filterable-cell': true, 'active': isActive('context', project.context) }"
+          ></td>
+        </tr>
+      </template>
+    </tbody>
+  </table>
+</section>
+
+<script define:vars={{ projectsDataClient: projects, uniqueRegionsClient: uniqueRegions, uniqueTypesClient: uniqueTypes, uniqueContextsClient: uniqueContexts }}>
+  window.projectFilter = function () {
+    return {
+      projects: projectsDataClient,
+      activeFilters: [],
+      openDropdown: null, // Estado para controlar qué dropdown está abierto ('region', 'type', 'context' o null)
+      uniqueRegions: uniqueRegionsClient, // Asegura que los datos estén disponibles en Alpine
+      uniqueTypes: uniqueTypesClient,
+      uniqueContexts: uniqueContextsClient,
+
+      get filteredProjects() {
+        if (!this.activeFilters.length) return this.projects;
+        return this.projects.filter(project =>
+          this.activeFilters.every(f => project[f.key].toLowerCase() === f.value.toLowerCase())
+        );
+      },
+      toggleDropdown(key) {
+        if (this.openDropdown === key) {
+          this.openDropdown = null; // Cierra el dropdown si ya estaba abierto
+        } else {
+          this.openDropdown = key; // Abre el dropdown correspondiente
+        }
+      },
+      toggleFilter(key, value) {
+        // Esta función ahora se usa tanto para las celdas como para los elementos del dropdown
+        const existingFilterIndex = this.activeFilters.findIndex(f => f.key === key);
+
+        if (existingFilterIndex > -1) {
+          if (this.activeFilters[existingFilterIndex].value.toLowerCase() === value.toLowerCase()) {
+            this.activeFilters.splice(existingFilterIndex, 1);
+          } else {
+            this.activeFilters.splice(existingFilterIndex, 1, { key: key, value: value, label: value });
+          }
+        } else {
+          this.activeFilters.push({ key: key, value: value, label: value });
+        }
+        this.openDropdown = null; // Cierra el dropdown después de seleccionar un filtro
+      },
+      isActive(key, value) {
+        return this.activeFilters.some(f => f.key.toLowerCase() === key.toLowerCase() && f.value.toLowerCase() === value.toLowerCase());
+      },
+      removeFilter(index) {
+        this.activeFilters.splice(index, 1);
+      },
+      clearAll() {
+        this.activeFilters = [];
+      }
+    };
+  };
+</script>
+
+<style>
+/* Estilos generales */
+.project-list-wrapper {
+  padding: 2rem 1rem;
+  max-width: 1000px;
+  margin: 0 auto;
+  font-family: 'Poppins', sans-serif;
+}
+.active-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  align-items: center;
+}
+.active-filters .label {
+  font-size: 0.85rem;
+  color: #999;
+  text-transform: uppercase;
+}
+.chip {
+  background: #eee;
+  border-radius: 16px;
+  padding: 0.3rem 0.8rem;
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.85rem;
+}
+.chip button {
+  background: none;
+  border: none;
+  margin-left: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+.clear-all {
+  background: none;
+  border: none;
+  font-size: 0.85rem;
+  margin-left: auto;
+  color: #888;
+  cursor: pointer;
+}
+
+/* Estilos de la tabla */
+.project-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+  text-transform: capitalize;
+}
+.project-table th,
+.project-table td {
+  padding: 0.75rem 0.5rem;
+  border-bottom: 1px solid #eee;
+}
+.project-table th {
+  text-align: left;
+  font-size: 0.75rem;
+  color: #999;
+  font-weight: 500;
+  cursor: pointer;
+  position: relative; /* Para posicionar el dropdown y la flecha */
+  padding-right: 20px; /* Espacio para la flecha */
+}
+
+/* Estilos para la flecha */
+.filterable-header .arrow-down {
+  position: absolute;
+  right: auto; 
+  top: 52%;
+  transform: translateY(-50%);
+  font-size: 0.7em;
+  color: #888;
+  transition: transform 0.2s ease-in-out; /* Animación para la flecha */
+}
+.filterable-header .arrow-down.arrow-up {
+  transform: translateY(-50%) rotate(180deg); /* Gira la flecha hacia arriba */
+}
+
+/* Estilos de las celdas clickeables */
+.filterable-cell {
+  cursor: pointer;
+  transition: color 0.2s, font-weight 0.2s;
+}
+.filterable-cell:hover {
+  color: black;
+  font-weight: bold;
+}
+.filterable-cell.active {
+  color: #333;
+  font-weight: bold;
+}
+
+/* Estilos del menú desplegable */
+.dropdown-menu {
+  position: absolute;
+  top: 100%; /* Coloca el menú justo debajo de la cabecera */
+  left: 0;
+  z-index: 10; /* Asegura que esté por encima de otros elementos */
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  min-width: 150px; /* Ancho mínimo para el menú */
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  padding: 0.5rem 0;
+  text-transform: capitalize; /* Para que las opciones se vean como los datos */
+}
+
+.dropdown-menu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.dropdown-menu li {
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  white-space: nowrap; /* Evita que el texto se rompa */
+}
+
+.dropdown-menu li:hover {
+  background-color: #f0f0f0;
+  color: black;
+  font-weight: bold;
+}
+
+.dropdown-menu li.active {
+  background-color: #e6f7ff; /* Fondo para la opción activa en el dropdown */
+  color: #007bff; /* Color del texto para la opción activa */
+  font-weight: bold;
+}
+</style>

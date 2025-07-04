@@ -27,11 +27,11 @@ const currentPath = Astro.url.pathname;
       <ul class="flex gap-10 list-none m-0 p-0">
         <li>
           <a href="/" 
-             class={`font-poppins text-base relative no-underline hover:before:scale-x-100
-                    before:transition-transform before:duration-300 before:origin-bottom-left before:w-full
-                    before:h-px before:bg-current before:absolute before:bottom-[-5px] before:left-0
-                    before:scale-x-0 ${currentPath === '/' ? 'text-red-600 font-bold before:scale-x-100' : 'text-inherit font-medium'}`}>
-            Inicio
+            class={`font-poppins text-base relative no-underline hover:before:scale-x-100
+                      before:transition-transform before:duration-300 before:origin-bottom-left before:w-full
+                      before:h-px before:bg-current before:absolute before:bottom-[-5px] before:left-0
+                      before:scale-x-0 ${currentPath === '/' ? 'text-red-600 font-bold before:scale-x-100' : 'font-medium'}`}>
+              Inicio
           </a>
         </li>
         <li>

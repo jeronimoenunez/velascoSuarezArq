@@ -1,0 +1,293 @@
+---
+// src/pages/nosotros.astro
+import Layout from '../layouts/Layout.astro';
+import HeaderClean from '../components/HeaderFixedTop.astro'; 
+import HeaderFixedTop from '../components/HeaderFixedTop.astro';
+---
+
+
+  <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+
+  <script>
+      document.addEventListener('alpine:init', () => {
+        // Imagenes placeholder comunes
+        const sharedImages = [
+          'https://walkerwarner.com/wp-content/uploads/2023/01/path-groove-delivery-1200x1600.jpeg'
+        ];
+
+        // @ts-ignore
+        Alpine.data('scrollSpy', () => ({
+            currentSection: 1,
+            init() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const id = entry.target.getAttribute('id');
+                    // AÑADIR ESTA VERIFICACIÓN:
+                    if (id) { // Asegura que id no es null ni undefined
+                    this.currentSection = Number(id.replace('section', ''));
+                    } else {
+                    // Opcional: Manejar el caso donde no hay ID, por ejemplo, loggear un error
+                    console.warn('Elemento .snap-section sin ID:', entry.target);
+                    }
+                }
+                });
+            }, {
+                threshold: 0.6,
+            });
+
+            document.querySelectorAll('.snap-section').forEach(section => {
+                observer.observe(section);
+            });
+            }
+        }));
+          // @ts-ignore
+        Alpine.data('carouselResponsability', () => ({
+          current: 0,
+          images: sharedImages,
+          init() {
+            this.start();
+          },
+          start() {
+            setInterval(() => {
+              this.current = (this.current + 1) % this.images.length;
+            }, 4000);
+          }
+        }));
+        // @ts-ignore
+        Alpine.data('carouselMateriality', () => ({
+          current: 0,
+          images: sharedImages,
+          init() {
+            this.start();
+          },
+          start() {
+            setInterval(() => {
+              this.current = (this.current + 1) % this.images.length;
+            }, 4000);
+          }
+        }));
+        // @ts-ignore
+        Alpine.data('carouselRigor', () => ({
+          current: 0,
+          images: sharedImages,
+          init() {
+            this.start();
+          },
+          start() {
+            setInterval(() => {
+              this.current = (this.current + 1) % this.images.length;
+            }, 4000);
+          }
+        }));
+      });
+  </script>
+
+<Layout title="Nosotros - Velasco Suarez Arquitectos">
+  <HeaderFixedTop
+    textColor="white"
+    backgroundColor="transparent"
+    hasBorder={false}
+    key="nosotros-header" 
+  />
+
+  <main class="snap-container" x-data="scrollSpy()" x-init="init">
+
+    <!-- Sección 1: Hero (mantener intacta) -->
+    <section id="section1" class="snap-section hero-nosotros" style="background-image: url('https://walkerwarner.com/wp-content/uploads/2023/02/ww-mauu-0501-weblandscape-1600x1200.jpg');">
+      <div class="hero-nosotros-overlay">
+        <h1 class="hero-nosotros-title" style="font-family: var(--font-serif); font-size: 3em; margin-top: 10px;">
+          Enduring architecture for inspired living.
+        </h1>
+      </div>
+    </section>
+
+    <!-- Sección 2: Context -->
+    <section id="section2" class="snap-section split-section reverse">
+      <div class="split-image" style="background-image: url('https://walkerwarner.com/wp-content/uploads/2023/02/ww-mauu-0501-weblandscape-1600x1200.jpg')"></div>
+      <div class="split-text">
+        <h2>Context</h2>
+        <p>We begin by listening—to the history and culture of a place, to the landscape, and to our client’s values and vision.</p>
+      </div>
+    </section>
+
+    <!-- Sección 3: Responsibility -->
+    <section id="section3" class="snap-section split-section" x-data="carouselResponsability()">
+      <div class="split-image" :style="`background-image: url('https://walkerwarner.com/wp-content/uploads/2023/01/path-groove-delivery-1200x1600.jpeg')`"></div>
+      <div class="split-text">
+        <h2>Responsability</h2>
+        <p>Working with sensitivity helps us balance commitments to our clients, communities, and the environment.</p>
+      </div>
+    </section>
+
+    <!-- Sección 4: Materiality -->
+    <section id="section4" class="snap-section split-section" x-data="carouselMateriality()">
+      <div class="split-text">
+        <h2>Materiality</h2>
+        <p>Carefully chosen materials offer strength and beauty. They engage the senses with warmth and texture over time.</p>
+      </div>
+      <div class="split-image" :style="`background-image: url('https://walkerwarner.com/wp-content/uploads/2023/01/path-groove-delivery-1200x1600.jpeg')`"></div>
+    </section>
+
+    <!-- Sección 5: Rigor -->
+    <section id="section5" class="snap-section split-section" x-data="carouselRigor()">
+      <div class="split-image" :style="`background-image: url('https://walkerwarner.com/wp-content/uploads/2023/01/path-groove-delivery-1200x1600.jpeg')`"></div>
+      <div class="split-text">
+        <h2>Rigor</h2>
+        <p>We go beyond the expected, working to bring every detail into harmony.</p>
+      </div>
+    </section>
+
+    <!-- Sección 6: Video -->
+    <section id="section6" class="snap-section split-section">
+      <div class="split-text">
+        <h2>Innovation</h2>
+        <p>We embrace forward-thinking ideas, technologies, and partnerships to shape meaningful, enduring architecture.</p>
+      </div>
+      <div class="split-image">
+        <video autoplay muted loop playsinline style="width: 100%; height: 100%; object-fit: cover">
+          <source src="/videos/alvaraalto.mp4" type="video/mp4" />
+        </video>
+      </div>
+    </section>
+
+    <!-- Sección 7: Imagen Final -->
+    <section id="section7" class="snap-section hero-nosotros" style="background-image: url('https://walkerwarner.com/wp-content/uploads/2023/02/walker-warner-huinawai-0977-weblandscape.jpg');">
+      <div class="hero-nosotros-overlay">
+        <h2 class="hero-nosotros-title" style="font-family: var(--font-serif); font-size: 3em; margin-top: 10px;">
+          Enduring architecture for inspired living.
+        </h2>
+      </div>
+    </section>
+  </main>
+
+  <!-- Dots Navegación -->
+  <!-- TEST de visibilidad básica -->
+  <!-- <div class="scroll-dots">
+    <a href="#section1" class="dot"></a>
+    <a href="#section2" class="dot"></a>
+    <a href="#section3" class="dot"></a>a
+    <a href="#section4" class="dot"></a>
+    <a href="#section5" class="dot"></a>
+    <a href="#section6" class="dot"></a>
+    <a href="#section7" class="dot"></a>
+  </div> -->
+
+  <style>
+    .snap-container {
+      scroll-snap-type: y mandatory;
+      scroll-behavior: smooth;
+    }
+
+    .snap-section {
+      scroll-snap-align: start;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .hero-nosotros {
+      background-size: cover;
+      background-position: center;
+      position: relative;
+      color: white;
+      width: 100%;
+      height: 100vh;
+    }
+
+    .hero-nosotros-overlay {
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      position: relative;
+      z-index: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      text-align: center;
+    }
+
+    .hero-nosotros-title {
+      z-index: 2;
+      font-size: 3em;
+      font-family: var(--font-serif);
+      color: white;
+    }
+
+    .split-section {
+      display: flex;
+      flex-direction: row;
+      width: 100%;
+    }
+
+    .split-section.reverse {
+  flex-direction: row-reverse;
+}
+
+    .split-image {
+      width: 50%;
+      height: 100%;
+      background-size: cover;
+      background-position: center;
+    }
+
+    .split-text {
+      width: 50%;
+      background: #f7f7f2;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 0 4rem;
+    }
+
+    .scroll-dots {
+  position: fixed;
+  right: 2rem;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 9999;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  background: #a9a9a9;
+  border-radius: 50%;
+  border: 1px solid #f7f7f2;
+  display: block;
+  transition: background 0.3s;
+}
+
+.dot:hover {
+  background: black;
+}
+
+.active-dot {
+  background: black !important;
+}
+
+    video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    @media (max-width: 768px) {
+      .split-section {
+        flex-direction: column;
+      }
+      .split-image, .split-text {
+        width: 100%;
+        height: 50%;
+      }
+    }
+  </style>
+</Layout>

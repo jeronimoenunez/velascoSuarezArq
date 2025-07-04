@@ -1,0 +1,172 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ProjectGrid from '../components/ProjectGrid.astro';
+import ProjectList from '../components/ProjectList.astro';
+import HeaderFixedTop from '../components/HeaderFixedTop.astro'; 
+
+interface Project {
+  title: string;
+  region: string;
+  type: string;
+  context: string;
+  image: string;
+}
+
+const projects: Project[] = [
+  { title: 'Casa del Lago', region: 'México', type: 'Residencial', context: 'Rural', image: 'https://walkerwarner.com/wp-content/uploads/2022/11/WW_Leverone-Makena-1532a-1536x1024-1.jpg' },
+  { title: 'Oficinas Norte', region: 'California', type: 'Corporativo', context: 'Urbano', image: 'https://walkerwarner.com/wp-content/uploads/2023/02/ww-mauu-0501-weblandscape-1600x1200.jpg' },
+  { title: 'Casa de Vidrio', region: 'California', type: 'Residencial', context: 'Urbano', image: 'https://images.adsttc.com/media/images/60be/dd38/f2c9/9c01/64c1/530d/medium_jpg/23-walkerwarner-stone-hale-nukumoi-guest-house-matthew-millman-1330.jpg?1623121454' },
+  { title: 'Museo Moderno', region: 'Chile', type: 'Cultural', context: 'Urbano', image: 'https://iconiclife.com/wp-content/uploads/2021/05/Walker-Warner-residential-architecture-in-Hawaii.jpg' },
+  { title: 'Pabellón de Arte', region: 'Chile', type: 'Cultural', context: 'Urbano', image: 'https://walkerwarner.com/wp-content/uploads/2022/11/ww-leverone-makena-0403-1600x1200.jpg' },
+  { title: 'Casa Jardín', region: 'México', type: 'Residencial', context: 'Rural', image: 'https://digs.net/wp-content/uploads/2020/04/735-Flowers-Summer-201929943-02-02-scaled.jpg' },
+  { title: 'Estudio Abierto', region: 'California', type: 'Oficinas', context: 'Urbano', image: 'https://globaldesignnews.com/wp-content/uploads/2024/08/Hale-Kiawe-a-2-1160x829.webp' },
+  { title: 'Centro Comunitario', region: 'Chile', type: 'Cultural', context: 'Urbano', image: 'https://images.adsttc.com/media/images/5fe1/31e8/63c0/1798/5900/0aea/newsletter/Mountain_Wood_MM_24.jpg?1608593879' },
+  { title: 'Casa Refugio', region: 'México', type: 'Residencial', context: 'Rural', image: 'https://f7e5m2b4.delivery.rocketcdn.me/wp-content/uploads/2020/10/Oak-Woodland-House-16-533x400.jpg' },
+  { title: 'Laboratorio Verde', region: 'California', type: 'Institucional', context: 'Urbano', image: 'https://amazingarchitecture.com/storage/5029/00-mountain_wood_walker_warner_architects_california.jpg' },
+  { title: 'Torre Urbana', region: 'California', type: 'Corporativo', context: 'Urbano', image: 'https://walkerwarner.com/wp-content/uploads/2023/02/hale-kiawe-7-1600x1200.jpg' },
+  { title: 'Villa Costera', region: 'México', type: 'Residencial', context: 'Costero', image: 'https://design-milk.com/images/2017/12/Walker_Warner_Stone-1189.jpg' },
+  { title: 'Campus Creativo', region: 'Chile', type: 'Educación', context: 'Urbano', image: 'https://i.pinimg.com/736x/4d/8f/98/4d8f982520c02d721d532eb20e66a11c.jpg' },
+  { title: 'Galería Central', region: 'Chile', type: 'Cultural', context: 'Urbano', image: 'https://walkerwarner.com/wp-content/uploads/2023/02/200904-n22-weblandscape-1600x1183.jpg' },
+  { title: 'Residencia Zen', region: 'México', type: 'Residencial', context: 'Rural', image: 'https://digs.net/wp-content/uploads/2020/08/Walker_Warner_Philpotts-Makani_Eka-0895-1920x1024.jpg' },
+  { title: 'Centro de Innovación', region: 'California', type: 'Institucional', context: 'Urbano', image: 'https://iconiclife.com/wp-content/uploads/2021/05/modern-woodland-residential-architecture-Walker-Warner-780x521.jpg' },
+];
+---
+<Layout title="Proyectos - Velasco Suarez Arquitectos">
+  <HeaderFixedTop
+    textColor="#333"
+    backgroundColor="#f7f7f2"
+    hasBorder={false}
+    key="proyectos-header"
+  />
+
+  <section 
+  class="proyectos-tabs-section" 
+  x-data="{ tab: 'featured' }" 
+  x-init="
+    if (location.hash === '#list') tab = 'list';
+    else if (location.hash === '#featured') tab = 'featured';
+  "
+>
+    <div class="project-tabs">
+      <button
+        class="tab"
+        :class="{ 'active': tab === 'featured' }"
+        @click="tab = 'featured'; history.replaceState(null, '', '#featured')">
+        Featured
+      </button>
+
+      <button
+        class="tab"
+        :class="{ 'active': tab === 'list' }"
+        @click="tab = 'list'; history.replaceState(null, '', '#list')"
+>
+        Project List
+      </button>
+
+    </div>
+
+    <div class="tab-content">
+      <div x-show="tab === 'featured'" x-transition>
+        <ProjectGrid projects={projects} />
+      </div>
+
+      <div x-show="tab === 'list'" x-transition>
+        <ProjectList projects={projects} />
+      </div>
+    </div>
+  </section>
+</Layout>
+
+
+<script src="/scripts/search-enhanced.js" defer></script>
+
+<style>
+  .proyectos-tabs-section {
+    z-index: 999; 
+    background: #fff; 
+    width: 100%; 
+  }
+
+  .project-tabs {
+    display: flex;
+    position: fixed;
+    z-index: 999; 
+    width: 100%;
+    justify-content: center;
+    gap: 2rem;
+    border-bottom: 1px solid #ddd;
+    background: #fff;
+    padding-top: 5rem; 
+    padding-bottom: 0.25rem; 
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  /* Resto de tus estilos de proyectos.astro */
+  .tab {
+    background: none;
+    border: none;
+    font-size: 1rem;
+    font-family: 'Poppins';
+    font-weight: 300;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    padding: 10px 20px;
+    cursor: pointer;
+    color: #888;
+    position: relative;
+  }
+
+  .tab.active {
+    color: black;
+  }
+
+  .tab.active::after {
+    content: '';
+    display: block;
+    height: 1px;
+    background: black;
+    color: re;
+    width: 100%;
+    margin-top: 0px;
+    transition: width 0.3s ease;
+  }
+
+  .tab-content {
+    max-width: 1300px;
+    margin: 0 auto;
+    padding-top: 10rem; 
+    padding-bottom: 6rem;
+  }
+
+  @media (max-width: 768px) {
+    .project-tabs {
+        gap: 1rem;
+        padding-top: 0.5rem;
+        padding-bottom: 0.5rem;
+    }
+    .tab {
+        padding: 8px 15px;
+        font-size: 0.75rem;
+    }
+    .tab.active::after {
+        margin-top: 5px;
+    }
+    .tab-content {
+      padding-top: 1.5rem; 
+    }
+  }
+</style>
+
+<script is:inline>
+  document.addEventListener('DOMContentLoaded', () => {
+    const hash = location.hash;
+    const section = document.querySelector('.proyectos-tabs-section');
+
+    if ((hash === '#featured' || hash === '#list') && section) {
+      setTimeout(() => {
+        section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 100);
+    }
+  });
+</script>
+
