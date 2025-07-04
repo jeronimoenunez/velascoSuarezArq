@@ -1,18 +1,136 @@
 ---
-import HeaderInternal from '../components/HeaderInternal.astro';
+import Layout from '../layouts/Layout.astro';
+import HeaderInternal from '../components/HeaderInternal.astro'
+import ProjectSection from '../components/ProjectSection.astro';
+import HeroProjectImage from '../components/HeroProjectImage.astro';
+import CtaBtn from '../components/CtaBtn.astro';
+import CarouselSection from '../components/CarouselSection.astro';
+
+const homePageCards = [
+  {
+    type: 'PRESS',
+    title: "Kona Village's Shipwreck Bar on Travel + Leisure's Best Bars List",
+    image: 'https://walkerwarner.com/wp-content/uploads/2023/02/200904-n28-webvertical2-1204x1600.jpg',
+    text: 'KONA VILLAGE HAWAII',
+  },
+  {
+    type: 'NEWS',
+    title: 'Announcing New Promotions at Walker Warner',
+    image: '',
+    people: [
+      { name: 'Person1', img: 'https://walkerwarner.com/wp-content/uploads/2023/04/greg-1-cropped-1200x1600.jpg' },
+      { name: 'Person2', img: 'https://walkerwarner.com/wp-content/uploads/2023/04/clark-cropped-1200x1600.jpg' },
+      { name: 'Person3', img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTjfLHzEd9UlResd18AJ8FGutvcSBMVtaYkWr-T7IiVpbnOv7dXAVAPyuza8Uj-jGmO8Wc&usqp=CAU' },
+      { name: 'Person4', img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSvjVXpqLhnalgPCgnzIcr6mgJYcBcvFS7YwlEsK6i20ro10rnOVSqjU1-7WrxnkBriMqg&usqp=CAU' },
+      { name: 'Person5', img: 'https://walkerwarner.com/wp-content/uploads/2024/09/joey-ukrop-1200x1600.jpg' },
+      { name: 'Person6', img: 'https://walkerwarner.com/wp-content/uploads/2023/04/gina-cropped-1200x1600.jpg' },
+      { name: 'Person7', img: 'https://walkerwarner.com/wp-content/uploads/2023/04/marayd-cropped-1200x1600.jpg' },
+      { name: 'Person8', img: 'https://walkerwarner.com/wp-content/uploads/2025/02/mc-headshot-1280x1600.jpg' },
+      { name: 'Person9', img: 'https://walkerwarner.com/wp-content/uploads/2024/08/angie-markous-portrait-cropped-1200x1600.jpg' },
+      { name: 'Person10', img: 'https://walkerwarner.com/wp-content/uploads/2023/04/chris-cropped-1200x1600.jpg' },
+    ],
+    text: 'THE TEAM',
+  },
+  {
+    type: 'EVENTS',
+    title: 'Celebrating the Holidays with Walker Warner',
+    image: 'https://walkerwarner.com/wp-content/uploads/2023/02/walker-warner-odada-oak-woodland-0926-webvertical2-1194x1600.jpg',
+    date: 'Dec 12, 2024',
+  },
+  {
+    type: 'EVENTS',
+    title: 'Greg Warner Presents "Kuleana" at AIA Monterey Bay',
+    image: 'https://images.adsttc.com/media/images/607e/1f20/e6cf/df01/65ee/131c/medium_jpg/walker-warner-odada-0208.jpg?1618878262',
+    date: 'Nov 8, 2024',
+  }
+];
+
+const {
+  imageSrc,
+  altText,
+  link,
+  imageTitle,
+  class: customClass = ''
+} = Astro.props;
 ---
 
-<html lang="es">
-  <head>
-    <meta charset="UTF-8" />
+<Layout title="Velasco Suarez Arquitectos - Inicio">
+  <HeaderInternal
+    client:load 
+    initialTextColor="white" 
+    isTransparent={true} 
+    position="bottom"  
+    hasBackground={false}    
+  />
 
-    <link rel="stylesheet" href="/src/styles/global.css">
+  <!-- Hero section -->
+    <div id="hero" class="relative h-screen w-full bg-cover bg-center bg-no-repeat" style="background-image: url('https://walkerwarner.com/wp-content/uploads/2023/06/walker-warner-1600x900.jpg');">
+        <div class="absolute bottom-[-6rem] right-[8rem] mb-[-2rem] mr-10 max-w-3xl" id="hero-text">
+          <p class="text-black text-center text-base sm:text-lg md:text-xl lg:text-2xl max-w-[600px] font-light leading-tight px-4">
 
-    <title>Inicio - Velasco Suárez</title>
-  </head>
-  <body class="bg-gray-100 min-h-screen text-center flex flex-col items-center justify-center font-sans">
-    <h1 class="text-4xl font-bold text-red-600 mb-4 font-poppins">¡Tailwind está funcionando!</h1>
-    <p class="text-lg text-gray-700">Ahora podés empezar a construir tu sitio 🚀</p>
-    <a href="/nosotros" class="mt-6 inline-block px-4 py-2 bg-black text-white rounded hover:bg-gray-800 transition">Ir a Nosotros</a>
-  </body>
-</html>
+                Arquitectura que perdura, en espacios que inspiran el vivir.
+            </p>
+        </div>
+    </div>
+
+  <!-- Proyectos -->
+  <HeroProjectImage
+    imageSrc="https://amazingarchitecture.com/storage/2607/huaniwai_retreat_walker_warner_architects_kona_hawaii.jpg"
+    altText="Residencia Makena Leverone"
+    link="/proyectos/makena-leverone"
+    imageTitle="RESIDENCIA MAKENA LEVERONE"
+    customClass="w-full h-auto object-cover"
+  />
+
+  <ProjectSection stackedImageData={{
+    image1Src: "https://walkerwarner.com/wp-content/uploads/2022/11/ww-leverone-makena-0403-1600x1200.jpg",
+    image1Title: "Quintessa Estate",
+    image2Src: "https://walkerwarner.com/wp-content/uploads/2023/01/path-groove-delivery-1200x1600.jpeg",
+    image2Title: "Ethos",
+  }} isStackedOnly={true} alignRight={true} />
+
+  <HeroProjectImage
+    imageSrc="https://amazingarchitecture.com/storage/2607/huaniwai_retreat_walker_warner_architects_kona_hawaii.jpg"
+    altText="Residencia Makena Leverone"
+    link="/proyectos/makena-leverone"
+    imageTitle="RESIDENCIA MAKENA LEVERONE"
+  />
+
+  <ProjectSection stackedImageData={{
+    image1Src: "https://walkerwarner.com/wp-content/uploads/2022/11/ww-leverone-makena-0403-1600x1200.jpg",
+    image1Title: "Quintessa Estate",
+    image2Src: "https://walkerwarner.com/wp-content/uploads/2023/01/path-groove-delivery-1200x1600.jpeg",
+    image2Title: "Ethos",
+  }} isStackedOnly={true} alignRight={false} reverseStack={true} />
+
+  <HeroProjectImage
+    imageSrc="https://amazingarchitecture.com/storage/2607/huaniwai_retreat_walker_warner_architects_kona_hawaii.jpg"
+    altText="Residencia Makena Leverone"
+    link="/proyectos/makena-leverone"
+    imageTitle="RESIDENCIA MAKENA LEVERONE"
+  />
+
+  <ProjectSection stackedImageData={{
+    image1Src: "https://walkerwarner.com/wp-content/uploads/2022/11/ww-leverone-makena-0403-1600x1200.jpg",
+    image1Title: "Quintessa Estate",
+    image2Src: "https://walkerwarner.com/wp-content/uploads/2023/01/path-groove-delivery-1200x1600.jpeg",
+    image2Title: "Ethos",
+  }} isStackedOnly={true} alignRight={true} />
+
+  <HeroProjectImage
+    imageSrc="https://amazingarchitecture.com/storage/2607/huaniwai_retreat_walker_warner_architects_kona_hawaii.jpg"
+    altText="Residencia Makena Leverone"
+    link="/proyectos/makena-leverone"
+    imageTitle="RESIDENCIA MAKENA LEVERONE"
+  />
+
+  <!-- CTA y carrusel -->
+  <CtaBtn text="Ver más trabajos" href="/proyectos" />
+
+  <CarouselSection 
+    title="RECENT NEWS"
+    cardsData={homePageCards}
+    backgroundColor="#f5f0e1"
+    scrollSpeed={0.6} 
+  />
+</Layout>

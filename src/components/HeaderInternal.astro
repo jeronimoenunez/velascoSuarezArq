@@ -1,14 +1,184 @@
 ---
-//@ts-ignore
-import Alpine from 'alpinejs';
+// src/components/HeaderInternal.astro
+// src/layouts/Layout.astro
+import "../styles/global.css";
+const { 
+  initialTextColor = 'black', 
+  isTransparent = false, 
+  position = 'top', 
+  hasBackground = false 
+} = Astro.props;
+
+const currentPath = Astro.url.pathname;
 ---
-<html lang="es" x-data="{ isMenuOpen: false, isSearchOpen: false }" x-init="Alpine.start()">
-  <nav class="flex justify-between items-center max-w-screen-xl mx-auto">
-    <a href="/" class="text-xl font-bold">Velasco Suárez</a>
-    <ul class="hidden md:flex space-x-6 text-sm uppercase tracking-wide font-medium">
-      <li><a href="/nosotros" class="hover:text-blue-500">Nosotros</a></li>
-      <li><a href="/proyectos" class="hover:text-blue-500">Proyectos</a></li>
-      <li><a href="/contacto" class="hover:text-blue-500">Contacto</a></li>
-    </ul>
-  </nav>
-</html>
+
+<header 
+  id="main-header"
+  class="fixed top-0 left-0 w-full h-[90px] px-12 z-[1000] flex items-center justify-between transition-opacity duration-500 text-white"
+>
+
+<div class="w-full max-w-[1600px] flex justify-between items-center">
+    <a href="/" class="font-poppins font-semibold text-[1.8em] text-inherit no-underline" aria-label="Volver a la página de inicio Velasco Suarez">
+      VELASCO<span class="font-light">SUAREZ</span>
+    </a>
+
+
+    <nav class="hidden md:flex ml-[-10rem]">
+      <ul class="flex gap-10 list-none m-0 p-0">
+        <li>
+          <a href="/" 
+             class={`font-poppins text-base relative no-underline hover:before:scale-x-100
+                    before:transition-transform before:duration-300 before:origin-bottom-left before:w-full
+                    before:h-px before:bg-current before:absolute before:bottom-[-5px] before:left-0
+                    before:scale-x-0 ${currentPath === '/' ? 'text-red-600 font-bold before:scale-x-100' : 'text-inherit font-medium'}`}>
+            Inicio
+          </a>
+        </li>
+        <li>
+          <a href="/proyectos" 
+             class={`font-poppins text-base relative no-underline hover:before:scale-x-100
+                    before:transition-transform before:duration-300 before:origin-bottom-left before:w-full
+                    before:h-px before:bg-current before:absolute before:bottom-[-5px] before:left-0
+                    before:scale-x-0 ${currentPath.startsWith('/proyectos') ? 'text-red-600 font-bold before:scale-x-100' : 'text-inherit font-medium'}`}>
+            Proyectos
+          </a>
+        </li>
+        <li>
+          <a href="/nosotros" 
+             class={`font-poppins text-base relative no-underline hover:before:scale-x-100
+                    before:transition-transform before:duration-300 before:origin-bottom-left before:w-full
+                    before:h-px before:bg-current before:absolute before:bottom-[-5px] before:left-0
+                    before:scale-x-0 ${currentPath.startsWith('/nosotros') ? 'text-red-600 font-bold before:scale-x-100' : 'text-inherit font-medium'}`}>
+            Nosotros
+          </a>
+        </li>
+        <li>
+          <a href="/contacto" 
+             class={`font-poppins text-base relative no-underline hover:before:scale-x-100
+                    before:transition-transform before:duration-300 before:origin-bottom-left before:w-full
+                    before:h-px before:bg-current before:absolute before:bottom-[-5px] before:left-0
+                    before:scale-x-0 ${currentPath.startsWith('/contacto') ? 'text-red-600 font-bold before:scale-x-100' : 'text-inherit font-medium'}`}>
+            Contacto
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+    <button class="menu-toggle bg-transparent border-none cursor-pointer p-2 flex items-center justify-center z-[1100] text-current" aria-label="Abrir menú lateral" aria-expanded="false" aria-controls="side-menu">
+      <svg viewBox="0 0 100 100" width="30" height="30">
+        <circle cx="25" cy="50" r="8" fill="currentColor" />
+        <circle cx="50" cy="50" r="8" fill="currentColor" />
+        <circle cx="75" cy="50" r="8" fill="currentColor" />
+      </svg>
+    </button>
+  </div>
+
+  
+</header>
+
+<div id="overlay" class="fixed inset-0 w-screen h-screen bg-black bg-opacity-50 backdrop-blur-sm z-[1050] opacity-0 pointer-events-none transition-opacity duration-300 ease-in-out">
+</div>
+
+<div class="side-menu fixed top-0 right-0 translate-x-full w-full max-w-[350px] 
+- h-full
++ h-screen
+ bg-[#222] text-white z-[1060] transition-transform duration-400 
+ p-10 box-border flex flex-col justify-between items-start opacity-0 pointer-events-none overflow-y-auto">
+
+
+    <!-- Buscador -->
+    <div class="side-search w-full border-b border-[#444] pb-2 mb-6 flex flex-col items-start">
+      <div id="keyword-chips" class="flex flex-wrap gap-2 mb-2"></div>
+      <div class="w-full flex items-center">
+        <input 
+          type="text" 
+          class="search-input flex-1 min-w-0 bg-transparent border-none text-white text-[1.2em] p-2 outline-none font-poppins" 
+          placeholder="Search..." 
+          aria-label="Buscar en el sitio"
+        />
+        <div class="search-actions flex items-center gap-2 ml-2">
+          <button class="search-icon bg-transparent border-none text-white text-[1.2em] cursor-pointer hover:text-gray-400" aria-label="Buscar">🔍</button>
+          <button class="search-close bg-transparent border-none text-white text-[1.2em] cursor-pointer hover:text-gray-400" aria-label="Cerrar búsqueda">✖</button>
+        </div>
+      </div>
+      <div id="suggestion-box" class="absolute top-full left-0 mt-2 w-full bg-white rounded-lg shadow-lg z-[1060] max-h-64 overflow-y-auto"></div>
+      <div id="clear-history" class="hidden mt-2 ml-auto text-sm text-gray-300 hover:text-red-400 cursor-pointer">
+        Limpiar historial ✖
+      </div>
+    </div>
+
+    <!-- Navegación -->
+    <nav class="side-menu-nav w-full">
+      <ul class="list-none p-0 m-0 text-left">
+        <li class="mb-5">
+          <a href="/" 
+             class={`no-underline font-inter text-[1.5em] font-semibold block hover:text-gray-300 ${currentPath === '/' ? 'text-red-600' : 'text-white'}`}>
+            Inicio
+          </a>
+        </li>
+        <li class="mb-5">
+          <a href="/proyectos" 
+             class={`no-underline font-inter text-[1.5em] font-semibold block hover:text-gray-300 ${currentPath.startsWith('/proyectos') ? 'text-red-600' : 'text-white'}`}>
+            Proyectos
+          </a>
+        </li>
+        <li class="mb-5">
+          <a href="/nosotros" 
+             class={`no-underline font-inter text-[1.5em] font-semibold block hover:text-gray-300 ${currentPath.startsWith('/nosotros') ? 'text-red-600' : 'text-white'}`}>
+            Nosotros
+          </a>
+        </li>
+        <li class="mb-5">
+          <a href="/contacto" 
+             class={`no-underline font-inter text-[1.5em] font-semibold block hover:text-gray-300 ${currentPath.startsWith('/contacto') ? 'text-red-600' : 'text-white'}`}>
+            Contacto
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+    <!-- Redes -->
+    <div class="social-links flex gap-6 w-full justify-start mt-auto">
+      <a href="#" target="_blank" rel="noopener noreferrer" class="text-white no-underline font-poppins text-sm font-normal hover:text-gray-300">Instagram</a>
+      <a href="#" target="_blank" rel="noopener noreferrer" class="text-white no-underline font-poppins text-sm font-normal hover:text-gray-300">Facebook</a>
+    </div>
+  </div>
+
+<script src="/scripts/search-enhanced.js" defer></script>
+
+<script is:inline>
+  document.addEventListener('DOMContentLoaded', () => {
+    const header = document.getElementById('main-header');
+    const hero = document.getElementById('hero');
+
+    if (!header || !hero) return;
+
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          // Hero visible: sin fondo ni blur, sin movimiento
+          header.classList.remove(
+            'fixed', 'top-0', 'bg-white/70', 'backdrop-blur-sm', 'shadow-md', 'text-black', 'opacity-100'
+          );
+          header.classList.add(
+            'absolute', 'top-[calc(99vh-90px)]', 'opacity-100'
+          );
+        } else {
+          // Hero fuera de vista: header sticky con fondo y opacidad
+          header.classList.remove(
+            'absolute', 'top-[calc(99vh-90px)]'
+          );
+          header.classList.add(
+            'fixed', 'top-0', 'bg-white/70', 'backdrop-blur-sm', 'shadow-md', 'text-black', 'opacity-100'
+          );
+        }
+      });
+    }, {
+      rootMargin: '-100px 0px 0px 0px',
+      threshold: 0
+    });
+
+    observer.observe(hero);
+  });
+</script>
+
