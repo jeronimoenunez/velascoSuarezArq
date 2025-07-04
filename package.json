@@ -13,7 +13,7 @@
     "tailwindcss": "^4.1.11"
   },
   "devDependencies": {
-    "@astrojs/tailwind": "^6.0.2",
+    "@astrojs/tailwind": "6.0.2",
     "autoprefixer": "^10.x.x",
     "postcss": "^8.x.x",
     "tailwindcss": "^4.x.x"
