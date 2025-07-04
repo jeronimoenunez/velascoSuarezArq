@@ -1,0 +1,285 @@
+---
+// src/components/CarouselSection.astro
+// Este componente contendrá la sección del carrusel infinito y será reutilizable.
+
+// Definición de la interfaz para los datos de una sola card
+interface CardData {
+  type: string;
+  title: string;
+  image: string; // URL de la imagen
+  text?: string; // Texto adicional para algunos tipos de cards (e.g., PRESS, EVENTS)
+  people?: { name: string; img: string; }[]; // Array de objetos para las personas en la card NEWS
+  date?: string; // Para eventos
+}
+
+// Definición de las props que este componente aceptará
+interface Props {
+  title: string; // El título de la sección (ej. "RECENT NEWS")
+  cardsData: CardData[]; // Un array de objetos CardData para las cards del carrusel
+  backgroundColor?: string; // Opcional: para permitir cambiar el color de fondo de la sección
+  scrollSpeed?: number; // Opcional: para controlar la velocidad de desplazamiento
+}
+
+// Destructuración de las props
+const { title, cardsData, backgroundColor = '#f5f0e1', scrollSpeed = 0.5 } = Astro.props;
+---
+
+<section class="recent-news-section" style={`background-color: ${backgroundColor};`}>
+  <h3>{title}</h3> {/* Usamos la prop 'title' aquí */}
+  <div class="carousel-container">
+    <div class="carousel-track">
+      {cardsData.map((card, index) => ( // Usamos 'cardsData' de las props
+        <div class="card" data-type={card.type} data-index={index}>
+          {card.type === 'NEWS' && card.people ? (
+            <div class="news-people-grid">
+              {card.people.map((person, i) => (
+                <img src={person.img} alt={person.name} class="person-thumbnail" loading="lazy" decoding="async" />
+              ))}
+            </div>
+          ) : (
+            <img src={card.image} alt={card.title} class="card-image" loading="lazy" decoding="async" />
+          )}
+          <div class="card-content">
+            <span class="card-type">{card.type}</span>
+            <p class="card-title">{card.title}</p>
+            {card.text && <span class="card-text">{card.text}</span>}
+            {card.date && <span class="card-date">{card.date}</span>}
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .recent-news-section {
+    padding: 40px 0; /* Espaciado vertical */
+    text-align: center;
+  }
+
+  .recent-news-section h3 {
+    font-family: sans-serif; /* Ajusta la fuente si tienes una específica */
+    font-size: 1em;
+    font-weight: 400;
+    color: #333;
+    margin-bottom: 40px;
+    letter-spacing: 2px;
+  }
+
+  .carousel-container {
+    width: 100%;
+    overflow: hidden; /* Esconde las cards que están fuera de la vista */
+    position: relative;
+  }
+
+  .carousel-track {
+    display: flex;
+    white-space: nowrap; /* Mantiene todas las cards en una sola línea */
+    will-change: transform;
+  }
+
+  .card {
+    flex: 0 0 auto;
+    width: 300px;
+    height: 400px;
+    margin: 0 15px;
+    background-color: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    cursor: pointer;
+  }
+
+  .card-image {
+    width: 100%;
+    height: 60%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .card-content {
+    padding: 15px;
+    height: 40%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .card-type {
+    font-size: 0.8em;
+    color: #666;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+  }
+
+  .card-title {
+    font-size: 1.1em;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 10px;
+    line-height: 1.3;
+    -webkit-line-clamp: 3; /* O el número de líneas que desees para el título */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .card-text, .card-date {
+    font-size: 0.9em;
+    color: #888;
+    -webkit-line-clamp: 2; /* Puedes ajustar el número de líneas, por ejemplo, 2 para el texto secundario */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* Estilos específicos para la card de tipo NEWS */
+  .card[data-type="NEWS"] .news-people-grid {
+    width: 100%;
+    height: 75%;
+    display: grid;
+    /* --- ¡ESTE ES EL CAMBIO CLAVE PARA 10 PERSONAS EN 2 FILAS! --- */
+    grid-template-columns: repeat(5, 1fr); /* 5 columnas */
+    grid-template-rows: repeat(2, 1fr);   /* 2 filas */
+    /* ---------------------------------------------------------------- */
+    gap: 1px;
+    background-color: #eee;
+    overflow: hidden;
+  }
+
+  .news-people-grid .person-thumbnail {
+    width: 97%;
+    height: 50%;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* Media Queries para Responsividad */
+  @media (max-width: 1200px) {
+    .card {
+      width: 280px;
+      height: 380px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .recent-news-section {
+      padding: 50px 0;
+    }
+    .recent-news-section h3 {
+      font-size: 1.3em;
+      margin-bottom: 30px;
+    }
+    .card {
+      width: 250px;
+      height: 350px;
+      margin: 0 10px;
+    }
+    /* Puedes ajustar las columnas de la cuadrícula de personas para pantallas más pequeñas si lo deseas */
+    .card[data-type="NEWS"] .news-people-grid {
+      grid-template-columns: repeat(4, 1fr); /* Por ejemplo, 4 columnas en móviles */
+      grid-template-rows: repeat(3, 1fr);   /* 3 filas para acomodar 10-12 si no caben 5 */
+    }
+  }
+
+  @media (max-width: 480px) {
+    .card {
+      width: 200px;
+      height: 300px;
+      margin: 0 8px;
+    }
+    /* Asegúrate de que las miniaturas de personas se vean bien en pantallas muy pequeñas */
+    .card[data-type="NEWS"] .news-people-grid {
+      grid-template-columns: repeat(3, 1fr); /* O 3 columnas en móviles muy pequeños */
+      grid-template-rows: repeat(4, 1fr);   /* 4 filas si son 10-12 personas */
+    }
+  }
+</style>
+
+<script define:vars={{ scrollSpeed }}>
+  // Script para un desplazamiento infinito robusto y optimizado con JavaScript
+  document.addEventListener('DOMContentLoaded', setupCarousel);
+  document.addEventListener('astro:after-swap', setupCarousel);
+
+  function setupCarousel() {
+    const carouselTrack = document.querySelector('.carousel-track');
+    // Para Astro SPA / View Transitions, aseguramos que el setup solo se haga una vez
+    // por cada instancia del componente, si ya fue inicializado, evitamos duplicar listeners
+    if (carouselTrack && carouselTrack.dataset.initialized) {
+        return;
+    }
+    if (carouselTrack) {
+        carouselTrack.dataset.initialized = 'true';
+    }
+
+
+    const originalCards = Array.from(carouselTrack.children); 
+
+    if (!carouselTrack || originalCards.length === 0) {
+      console.warn('Carousel track or cards not found or no cards to initialize.');
+      return;
+    }
+
+    // Limpia las duplicaciones previas si se vuelve a ejecutar setupCarousel (ej. en Astro SPA)
+    // Esto es importante si setupCarousel se llama varias veces para la misma instancia del componente
+    while (carouselTrack.children.length > originalCards.length) {
+        carouselTrack.removeChild(carouselTrack.lastChild);
+    }
+    
+    // Clonar las cards para un bucle infinito
+    // Clona 2 veces el conjunto original para asegurar un bucle suave
+    for (let i = 0; i < originalCards.length; i++) {
+      carouselTrack.appendChild(originalCards[i].cloneNode(true));
+    }
+    for (let i = 0; i < originalCards.length; i++) {
+      carouselTrack.appendChild(originalCards[i].cloneNode(true));
+    }
+
+
+    let cardWidth = originalCards[0].offsetWidth; 
+    let cardMarginRight = parseFloat(window.getComputedStyle(originalCards[0]).marginRight);
+    let originalSetWidth = (cardWidth + cardMarginRight) * originalCards.length; // Usamos solo marginRight de una card para el espacio entre ellas. Ajustado.
+
+    let currentScroll = 0;
+    let animationFrameId;
+    let isPaused = false;
+
+    function animateScroll() {
+      if (!isPaused) {
+        currentScroll += scrollSpeed; // Usamos la variable JS pasada desde la prop
+
+        if (currentScroll >= originalSetWidth) {
+          currentScroll = 0;
+        }
+
+        carouselTrack.style.transform = `translateX(-${currentScroll}px)`;
+      }
+      animationFrameId = requestAnimationFrame(animateScroll);
+    }
+
+    carouselTrack.addEventListener('mouseenter', () => {
+      isPaused = true;
+    });
+
+    carouselTrack.addEventListener('mouseleave', () => {
+      isPaused = false;
+    });
+
+    animateScroll();
+
+    let resizeTimeout;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(() => {
+        // Recalcular el ancho del set original si el tamaño de las cards cambia
+        cardWidth = originalCards[0].offsetWidth;
+        cardMarginRight = parseFloat(window.getComputedStyle(originalCards[0]).marginRight);
+        originalSetWidth = (cardWidth + cardMarginRight) * originalCards.length; // Ajustado.
+      }, 250);
+    });
+  }
+</script>

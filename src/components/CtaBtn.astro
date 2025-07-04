@@ -1,0 +1,119 @@
+---
+interface Props {
+  text: string;
+  href: string;
+}
+
+const { text, href } = Astro.props;
+---
+
+<div class="call-to-action-section">
+  <a href={href} class="call-to-action-button">
+    {text}
+  </a>
+</div>
+
+<style>
+  .call-to-action-section {
+    text-align: center;
+    padding: 80px 0; /* Controla el espacio vertical de la sección */
+  }
+
+  .call-to-action-button {
+    display: inline-block; /* Crucial para que el ancho se ajuste al contenido del texto */
+    background-color: transparent;
+    
+    border-radius: 5px;
+    text-decoration: none;
+    position: relative;
+    overflow: hidden; /* Necesario para el efecto de llenado de la línea (y para que el texto clipie si se desliza algo fuera) */
+    
+    font-size: 1.2em;
+    font-weight: 400;
+    letter-spacing: 1px;
+    
+    /* --- INICIO DE ESTILOS PARA EL EFECTO DE LLENADO DE TEXTO --- */
+    color: transparent; /* Hace el texto real transparente para que el background-image se vea */
+    
+    /* Definimos un gradiente lineal: el color de 'llenado' (#333) y el color inicial (#ddd) */
+    background-image: linear-gradient(to right, #333 50%, #ddd 50%); 
+    
+    background-size: 200% 100%; /* El fondo es el doble de ancho que el elemento, para deslizarlo */
+    background-position: 100% 0; /* Posición inicial: muestra la mitad derecha (el color #ddd) */
+    
+    /* Recorta el fondo para que solo sea visible dentro de la forma del texto */
+    -webkit-background-clip: text; /* Prefijo para navegadores Webkit */
+    background-clip: text; 
+    
+    /* Asegura la transparencia del texto en navegadores WebKit */
+    -webkit-text-fill-color: transparent; 
+    
+    /* Transición suave para la animación del background-position */
+    transition: background-position 0.3s ease-out; 
+    /* --- FIN DE ESTILOS PARA EL EFECTO DE LLENADO DE TEXTO --- */
+
+    width: auto; /* Asegura que el ancho del botón se ajuste al contenido del texto */
+    box-sizing: content-box; 
+  }
+
+  /* Pseudo-elemento para la línea gris claro estática (siempre visible) */
+  .call-to-action-button::before {
+    content: '';
+    position: absolute;
+    /* --- REVERTIDO: USAR 'bottom' PARA POSICIONAR LA LÍNEA DEBAJO DEL TEXTO --- */
+    top: 1.5em; /* Distancia del subrayado desde la parte inferior del texto */
+    left: 0;
+    width: 100%; 
+    height: 1px; 
+    background-color: #ddd; /* Gris muy claro */
+    z-index: 0; /* Por debajo de la línea que se llena */
+  }
+
+  /* Pseudo-elemento para la línea que se llena al pasar el mouse */
+  .call-to-action-button::after {
+    content: '';
+    position: absolute;
+    /* --- REVERTIDO: USAR 'bottom' PARA POSICIONAR LA LÍNEA DEBAJO DEL TEXTO --- */
+    top: 1.5em; /* Misma distancia que la línea estática */
+    left: 0;
+    width: 100%; 
+    height: 1px;
+    background-color: #333; /* Gris oscuro para el efecto de llenado */
+    transform: scaleX(0); /* Inicialmente oculto */
+    transform-origin: bottom left; /* La animación comienza desde la izquierda */
+    transition: transform 0.3s ease-out; /* Transición para la animación de llenado */
+    z-index: 1; /* Por encima de la línea estática */
+  }
+
+  /* Estilos al pasar el mouse sobre el botón */
+  .call-to-action-button:hover {
+    /* Mueve la posición del fondo para que el color #333 (el color de 'llenado') llene el texto */
+    background-position: 0% 0; 
+  }
+
+  /* Efecto al pasar el mouse sobre el pseudo-elemento ::after de la línea */
+  .call-to-action-button:hover::after {
+    transform: scaleX(1); /* La línea se llena de izquierda a derecha */
+  }
+
+  /* Media queries para responsividad */
+  @media (max-width: 768px) {
+    .call-to-action-section {
+      padding: 50px 0;
+    }
+    .call-to-action-button {
+      font-size: 1.1em;
+      width: auto; 
+      box-sizing: content-box;
+      /* Asegurarse de que el gradiente para el texto se adapte en móviles */
+      background-size: 200% 100%; 
+      background-position: 100% 0; 
+    }
+    .call-to-action-button::before,
+    .call-to-action-button::after {
+      /* Mantenemos el 'bottom' para consistencia en móviles */
+      bottom: 0.7em; 
+      height: 1px; 
+    }
+  }
+</style>
