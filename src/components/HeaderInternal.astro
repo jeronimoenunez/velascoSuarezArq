@@ -1,0 +1,14 @@
+---
+//@ts-ignore
+import Alpine from 'alpinejs';
+---
+<html lang="es" x-data="{ isMenuOpen: false, isSearchOpen: false }" x-init="Alpine.start()">
+  <nav class="flex justify-between items-center max-w-screen-xl mx-auto">
+    <a href="/" class="text-xl font-bold">Velasco Suárez</a>
+    <ul class="hidden md:flex space-x-6 text-sm uppercase tracking-wide font-medium">
+      <li><a href="/nosotros" class="hover:text-blue-500">Nosotros</a></li>
+      <li><a href="/proyectos" class="hover:text-blue-500">Proyectos</a></li>
+      <li><a href="/contacto" class="hover:text-blue-500">Contacto</a></li>
+    </ul>
+  </nav>
+</html>

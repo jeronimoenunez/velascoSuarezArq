@@ -1,11 +1,18 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+import HeaderInternal from '../components/HeaderInternal.astro';
 ---
 
-<Layout>
-	<Welcome />
-</Layout>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+
+    <link rel="stylesheet" href="/src/styles/global.css">
+
+    <title>Inicio - Velasco Suárez</title>
+  </head>
+  <body class="bg-gray-100 min-h-screen text-center flex flex-col items-center justify-center font-sans">
+    <h1 class="text-4xl font-bold text-red-600 mb-4 font-poppins">¡Tailwind está funcionando!</h1>
+    <p class="text-lg text-gray-700">Ahora podés empezar a construir tu sitio 🚀</p>
+    <a href="/nosotros" class="mt-6 inline-block px-4 py-2 bg-black text-white rounded hover:bg-gray-800 transition">Ir a Nosotros</a>
+  </body>
+</html>
