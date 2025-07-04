@@ -1,0 +1,711 @@
+---
+// src/pages/contacto.astro
+import Layout from '../layouts/Layout.astro';
+import HeaderFixedTop from '../components/HeaderFixedTop.astro'; 
+import { noticias } from '../data/noticias';
+const noticiasJSON = JSON.stringify(noticias);
+---
+
+<Layout title="Contacto - Velasco Suarez Arquitectos">
+  <HeaderFixedTop
+    textColor="#333"
+    backgroundColor="#f7f7f2"
+    hasBorder={false}
+    key="contacto-header"        
+  />
+
+  <div x-data="{tab: 'contacto'}" class="contact-tabs">
+    <nav class="tab-nav flex gap-10 justify-center border-b border-gray-300 text-black text-sm font-light uppercase tracking-[0.15em]">
+      <template x-for="item in ['contacto', 'equipo', 'noticias', 'careers', 'about']" :key="item"></template>
+      <button 
+        :class="{ active: tab === 'contacto' }" 
+        @click="tab = 'contacto'" 
+        class="uppercase tracking-[0.15em] font-light text-sm py-2"
+      >Contáctanos</button>
+      
+      <button 
+        :class="{ active: tab === 'equipo' }" 
+        @click="tab = 'equipo'" 
+        class="uppercase tracking-[0.15em] font-light text-sm py-2"
+      >Equipo</button>
+      
+      <button 
+        :class="{ active: tab === 'noticias' }" 
+        @click="tab = 'noticias'" 
+        class="uppercase tracking-[0.15em] font-light text-sm py-2"
+      >Noticias</button>
+      
+      <button 
+        :class="{ active: tab === 'careers' }" 
+        @click="tab = 'careers'" 
+        class="uppercase tracking-[0.15em] font-light text-sm py-2"
+      >Carreras Profesionales</button>
+      
+      <button 
+        :class="{ active: tab === 'about' }" 
+        @click="tab = 'about'" 
+        class="uppercase tracking-[0.15em] font-light text-sm py-2"
+      >About</button>
+    </nav>
+
+
+    <div x-show="tab === 'contacto'" class="tab-panel">
+      <section class="relative w-full min-h-screen overflow-hidden text-gray-600">
+        <!-- Mapa de fondo -->
+        <div class="absolute inset-0">
+          <iframe
+            width="100%" height="100%" frameborder="0" scrolling="no"
+            title="map"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3676.433411993623!2d-71.35595422340457!3d-40.16150337148193!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x96110e7205177a05%3A0x155250753d6f99fa!2sAlmte.%20Brown%20495%2C%20Q8370%20San%20Mart%C3%ADn%20de%20los%20Andes%2C%20Neuqu%C3%A9n!5e1!3m2!1ses!2sar!4v1750696466719!5m2!1ses!2sar"
+            style="filter: saturate(0.5) contrast(1.2) opacity(0.9);"
+          ></iframe>
+        </div>
+
+        <!-- Formulario alineado a la izquierda -->
+        <div class="relative z-10 flex justify-start px-6 py-24">
+          <form class="w-full max-w-lg bg-white p-10 rounded-lg shadow-lg">
+            <div class="flex flex-wrap -mx-3 mb-6">
+              <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                <label for="grid-first-name" class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+                  Nombre
+                </label>
+                <input
+                  id="grid-first-name" type="text" placeholder="Nombre..."
+                  class="appearance-none block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                >
+                <p class="text-red-500 text-xs italic">Este campo es obligatorio.</p>
+              </div>
+              <div class="w-full md:w-1/2 px-3">
+                <label for="grid-last-name" class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+                  Apellido
+                </label>
+                <input
+                  id="grid-last-name" type="text" placeholder="Apellido..."
+                  class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+              </div>
+            </div>
+
+            <div class="mb-6 px-3">
+              <label for="email" class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+                E-mail
+              </label>
+              <input
+                id="email" type="email" placeholder="tucorreo@ejemplo.com"
+                class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+              <p class="text-gray-600 text-xs italic">Asegúrate de ingresar un correo válido.</p>
+            </div>
+
+            <div class="flex flex-wrap -mx-3 mb-6">
+              <div class="w-full px-3">
+                <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="telefono">
+                  Teléfono
+                </label>
+                <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="telefono" type="tel" placeholder="+54 9 11 1234-5678">
+              </div>
+            </div>
+
+            <div class="flex flex-wrap -mx-3 mb-6">
+              <div class="w-full px-3">
+                <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="asunto">
+                  Asunto
+                </label>
+                <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="asunto" type="text" placeholder="Motivo del mensaje">
+              </div>
+            </div>
+
+            <div class="mb-6 px-3">
+              <label for="message" class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+                Mensaje
+              </label>
+              <textarea
+                id="message" rows="6" placeholder="Tu mensaje aquí..."
+                class="no-resize block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 resize-none"
+              ></textarea>
+              <p class="text-gray-600 text-xs italic">Contanos en qué podemos ayudarte.</p>
+            </div>
+
+            <div class="md:flex md:items-center px-3">
+              <div class="md:w-1/3">
+                <button
+                  type="submit"
+                  class="shadow bg-teal-500 hover:bg-teal-600 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-6 rounded"
+                >
+                  Enviar
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </section>
+    </div>
+
+    <div x-show="tab === 'equipo'" class="tab-panel tab-panel-equipo" x-data="{
+      filtro: 'all',
+      miembros: [
+          { nombre: 'Brooks Walker', titulo: 'Founder & Principal', img: 'https://walkerwarner.com/wp-content/uploads/2023/04/greg-1-cropped-1200x1600.jpg', tipo: 'firm' },
+          { nombre: 'Greg Warner', titulo: 'Founder & Partner', img: 'https://walkerwarner.com/wp-content/uploads/2023/04/clark-cropped-1200x1600.jpg', tipo: 'firm' },
+          { nombre: 'Kathy Scott', titulo: 'Partner', img: 'https://walkerwarner.com/wp-content/uploads/2023/01/anne-griffes.jpg', tipo: 'firm' },
+          { nombre: 'Mike McCabe', titulo: 'Partner', img: 'https://walkerwarner.com/wp-content/uploads/2023/04/charles-cropped-1200x1600.jpg', tipo: 'firm' },
+          { nombre: 'Ana López', titulo: 'Project Leader', img: 'https://walkerwarner.com/wp-content/uploads/2022/11/kathy-scott-portrait-cropped-v2-1200x1600.jpg', tipo: 'project' },
+          { nombre: 'Luis Gómez', titulo: 'Project Leader', img: 'https://walkerwarner.com/wp-content/uploads/2023/04/matt-yungert-cropped-1200x1600.jpg', tipo: 'project' },
+          { nombre: 'Carla Núñez', titulo: 'Project Leader', img: 'https://walkerwarner.com/wp-content/uploads/2023/04/katherine-cropped-1200x1600.jpg', tipo: 'project' },
+          { nombre: 'Pedro Ríos', titulo: 'Project Leader', img: 'https://walkerwarner.com/wp-content/uploads/2023/04/daniel-cropped-1200x1600.jpg', tipo: 'project' },
+          { nombre: 'Lucía Prieto', titulo: 'Firm Leader', img: 'https://walkerwarner.com/wp-content/uploads/2023/04/gina-cropped-1200x1600.jpg', tipo: 'firm' },
+          { nombre: 'Mario Beltrán', titulo: 'Firm Leader', img: 'https://walkerwarner.com/wp-content/uploads/2024/08/nick-kazmierski-portrait-cropped-1200x1600.jpg', tipo: 'firm' },
+          { nombre: 'Sofía Martínez', titulo: 'Project Leader', img: 'https://walkerwarner.com/wp-content/uploads/2024/08/sara-van-rensselaer-portrait-cropped-1200x1600.jpg', tipo: 'project' },
+          { nombre: 'Javier Torres', titulo: 'Project Leader', img: 'https://walkerwarner.com/wp-content/uploads/2023/04/matt-maneval-cropped-1200x1600.jpg', tipo: 'project' },
+          { nombre: 'Valentina Ruiz', titulo: 'Project Leader', img: 'https://walkerwarner.com/wp-content/uploads/2023/04/meg-cropped-1200x1600.jpg', tipo: 'project' },
+          { nombre: 'Tomás Herrera', titulo: 'Project Leader', img: 'https://walkerwarner.com/wp-content/uploads/2023/04/john-sydnor-cropped-1200x1600.jpg', tipo: 'project' },
+          { nombre: 'Elena Ramírez', titulo: 'Project Leader', img: 'https://walkerwarner.com/wp-content/uploads/2024/08/sara-van-rensselaer-portrait-cropped-1200x1600.jpg', tipo: 'project' },
+          { nombre: 'Martín Gutiérrez', titulo: 'Project Leader', img: 'https://walkerwarner.com/wp-content/uploads/2023/04/amadeo-cropped-1200x1600.jpg', tipo: 'project' },
+          { nombre: 'Gabriela Soto', titulo: 'Project Leader', img: 'https://walkerwarner.com/wp-content/uploads/2023/04/marayd-cropped-1200x1600.jpg', tipo: 'project' },
+          { nombre: 'Daniel Fernández', titulo: 'Firm Leader', img: 'https://walkerwarner.com/wp-content/uploads/2024/08/miko-mendoza-portrait-cropped-1200x1600.jpg', tipo: 'firm' },
+          { nombre: 'Luciana Pérez', titulo: 'Firm Leader', img: 'https://walkerwarner.com/wp-content/uploads/2023/04/aleksa-cropped-1200x1600.jpg', tipo: 'firm' },
+          { nombre: 'Santiago Vargas', titulo: 'Firm Leader', img: 'https://walkerwarner.com/wp-content/uploads/2023/04/chris-ryan-cropped-1200x1600.jpg', tipo: 'firm' },
+          { nombre: 'Paula Medina', titulo: 'Firm Leader', img: 'https://walkerwarner.com/wp-content/uploads/2024/08/katie-kelleher-portrait-cropped-1200x1600.jpg', tipo: 'firm' },
+          { nombre: 'Carlos Navarro', titulo: 'Firm Leader', img: 'https://walkerwarner.com/wp-content/uploads/2023/04/dan-b-cropped-1200x1600.jpg', tipo: 'firm' },
+          { nombre: 'Fernanda Cabrera', titulo: 'Firm Leader', img: 'https://walkerwarner.com/wp-content/uploads/2024/08/angie-markous-portrait-cropped-1200x1600.jpg', tipo: 'firm' },
+          { nombre: 'Ignacio Romero', titulo: 'Firm Leader', img: 'https://walkerwarner.com/wp-content/uploads/2023/04/mike-cropped-1200x1600.jpg', tipo: 'firm' },
+      ]
+      }">
+
+      <!-- Principales (siempre visibles) -->
+      <div class="grid-equipo">
+          <template x-for="persona in miembros.slice(0, 4)" :key="persona.nombre">
+          <div class="card-equipo">
+              <img :src="persona.img" :alt="persona.nombre" />
+              <h3 x-text="persona.nombre"></h3>
+              <p x-text="persona.titulo"></p>
+          </div>
+          </template>
+      </div>
+
+      <!-- Navegador de filtros -->
+      <div class="filtro-nav">
+          <button :class="{ active: filtro === 'all' }" @click="filtro = 'all'">All Team</button>
+          <button :class="{ active: filtro === 'project' }" @click="filtro = 'project'">Project Leaders</button>
+          <button :class="{ active: filtro === 'firm' }" @click="filtro = 'firm'">Firm Leaders</button>
+      </div>
+
+      <!-- Miembros filtrados -->
+      <div class="grid-equipo" style="margin-top: 2rem;">
+          <template x-for="persona in miembros.slice(4).filter(p => filtro === 'all' || p.tipo === filtro)" :key="persona.nombre">
+          <div class="card-equipo">
+              <img :src="persona.img" :alt="persona.nombre" />
+              <h3 x-text="persona.nombre"></h3>
+              <p x-text="persona.titulo"></p>
+          </div>
+          </template>
+      </div>
+
+      <!-- Carrusel de testimonios -->
+      <div x-data="carouselComentarios()" class="testimonios-carousel">
+          <div class="testimonial" x-text="comentarios[current]"></div>
+      </div>
+    </div>
+
+    <script>
+  document.addEventListener('alpine:init', () => {
+    //@ts-ignore
+    Alpine.data('carouselComentarios', () => ({
+      current: 0,
+      comentarios: [
+        '“El compromiso con el diseño aquí va más allá de lo estético, es una forma de vida.” – Laura Sánchez, Senior Architect',
+        '“Trabajar en Velasco Suarez me inspira a mejorar cada día.” – Diego Torres, Project Manager',
+        '“Aquí cada voz cuenta, y cada proyecto se convierte en una experiencia colectiva.” – Paula Rivas, Interior Designer',
+        '“La atención al detalle y el respeto por el entorno me recuerdan por qué amo esta profesión.” – Martín García, Landscape Architect',
+        '“Siento que crezco profesionalmente con cada nuevo desafío.” – Camila López, Technical Director',
+        '“Una cultura que valora tanto la creatividad como la colaboración.” – Andrés Fernández, Partner'
+      ],
+      init() {
+        setInterval(() => {
+          this.current = (this.current + 1) % this.comentarios.length;
+        }, 4000);
+      }
+    }));
+  });
+</script>
+
+
+    <div x-show="tab === 'noticias'" class="tab-panel px-6 md:px-20 py-12 bg-[#f4f5ef]" x-data={`{ noticias: ${noticiasJSON} }`}>
+
+    <!-- Encabezado alineado a la izquierda -->
+    <div class="mb-10 flex flex-col items-start justify-start">
+      <p class="uppercase text-sm text-gray-500 mb-1">Sección</p>
+      <h2 class="text-2xl font-light">Últimas noticias del estudio</h2>
+    </div>
+
+    <!-- Grid de noticias -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+
+      <!-- Noticia fija 1 -->
+      <div class="relative group overflow-hidden aspect-[3/4] min-h-[350px]">
+        <img src="https://architizer-prod.imgix.net/media/mediadata/uploads/1700067529480Kona_Village_2023_Douglas_Friedman_N843.jpg?w=1680&q=60&auto=format,compress&cs=strip" alt="Noticia 1" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+        <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent flex flex-col justify-end p-4 items-start">
+          <div class="min-h-[3.5rem] flex flex-col justify-end">
+            <p class="text-[10px] tracking-widest uppercase text-white mb-1">Eventos</p>
+            <h3 class="text-white text-base leading-snug font-medium">Celebrando las fiestas con Walker Warner</h3>
+          </div>
+        </div>
+      </div>
+
+      <!-- Noticia fija 2 -->
+      <div class="relative group overflow-hidden aspect-[3/4] min-h-[350px]">
+        <img src="https://walkerwarner.com/wp-content/uploads/2023/10/201611-n358-webvertical-1298x1600.jpg" alt="Noticia 2" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+        <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent flex flex-col justify-end p-4 items-start">
+          <div class="min-h-[3.5rem] flex flex-col justify-end">
+            <p class="text-[10px] tracking-widest uppercase text-white mb-1">Prensa</p>
+            <h3 class="text-white text-base leading-snug font-medium">Walker Warner en Architectural Digest</h3>
+          </div>
+        </div>
+      </div>
+
+      <!-- Noticias dinámicas -->
+      <template x-for="noticia in noticias" :key="noticia.id">
+        <div class="relative group overflow-hidden aspect-[3/4] min-h-[350px]">
+          <img :src="noticia.imagen" :alt="noticia.alt" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+          <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent flex flex-col justify-end p-4 items-start">
+            <div class="min-h-[3.5rem] flex flex-col justify-end">
+              <p class="text-[10px] tracking-widest uppercase text-white mb-1" x-text="noticia.categoria"></p>
+              <h3 class="text-white text-base leading-snug font-medium" x-text="noticia.titulo"></h3>
+            </div>
+          </div>
+        </div>
+      </template>
+
+    </div>
+    </div>
+
+    <div x-show="tab === 'careers'" class="tab-panel">
+      <section class="space-y-24 px-6 py-24 bg-[#f9f9f6] text-gray-800">
+
+        <!-- BLOQUE 1 -->
+        <div class="flex flex-col lg:flex-row items-center gap-12">
+          <div class="lg:w-1/2">
+            <img src="https://walkerwarner.com/wp-content/uploads/2023/02/gwsketchedit-3-e1675735633489-1600x955.jpg" alt="Equipo reunido" class="rounded-md shadow-lg w-full object-cover">
+          </div>
+          <div class="lg:w-1/2">
+            <p class="text-lg mb-6">
+              Reunimos a personas con talento para hacer un trabajo significativo. Realmente disfrutamos de la compañía del otro y de lo que hacemos.
+              Muchos de nuestros colegas eligen quedarse con nosotros durante la mayor parte de sus carreras, y nos gusta pensar que esto es una marca del respeto mutuo que está en el corazón de nuestra cultura y nuestro proceso: respeto por el paisaje y los materiales, por el estudio y el descubrimiento, por nuestros clientes y por los demás.
+            </p>
+            <button class="border border-gray-500 px-6 py-2 uppercase text-sm tracking-wide hover:bg-gray-100 transition">
+              Ver ofertas de trabajo
+            </button>
+          </div>
+        </div>
+
+        <!-- Bloque 2 -->
+        <div class="grid md:grid-cols-2 gap-8 items-center py-16">
+          <div>
+            <h3 class="text-xl font-semibold mb-4">Compartiendo lo que sabemos</h3>
+            <p class="text-gray-700">
+              Creemos que la colaboración abre nuevas posibilidades. Trabajamos para crear un entorno educativo en el que podamos aprender unos de otros, aprovechando el talento de todo nuestro equipo y fomentando la polinización cruzada de ideas. Compartimos de forma transparente lo que ha funcionado, y lo que no, para que todos podamos seguir estudiando y creciendo.
+            </p>
+          </div>
+          <div class="flex justify-center">
+            <img src="https://walkerwarner.com/wp-content/uploads/2024/09/240812-walkerwarner1750-1600x1067.jpg" alt="Equipo compartiendo conocimiento" class="max-w-md max-h-84 w-full h-auto object-cover rounded-md shadow-lg" />
+          </div>
+        </div>
+
+        <!-- Bloque 3 -->
+        <div class="grid md:grid-cols-2 gap-8 items-center py-16">
+          <div class="flex justify-center order-2 md:order-1">
+            <img src="https://walkerwarner.com/wp-content/uploads/2023/03/dsc04955.jpg" alt="Equilibrio vida y trabajo" class="max-w-md max-h-84 w-full h-auto object-cover rounded-md shadow-lg" />
+          </div>
+          <div class="order-1 md:order-2">
+            <h3 class="text-xl font-semibold mb-4">Equilibrio entre el trabajo y la vida</h3>
+            <p class="text-gray-700">
+              Una vida laboral equilibrada sostiene nuestra dedicación a lo largo del tiempo. Apoyamos a las personas de nuestro equipo de manera integral, adoptando la flexibilidad y ofreciendo beneficios integrales.
+            </p>
+          </div>
+        </div>
+
+        <!-- Bloque 4 -->
+        <div class="grid md:grid-cols-2 gap-8 items-center py-16">
+          <div>
+            <h3 class="text-xl font-semibold mb-4">Un nivel de excelencia</h3>
+            <p class="text-gray-700">
+              Nuestra dedicación a la artesanía da forma a la forma en que trabajamos. Nos tomamos el tiempo para una exploración reflexiva, considerando y refinando los detalles intrincados y construyendo prototipos para poner a prueba nuestras ideas. Esta práctica disciplinada da a todos en nuestro equipo la oportunidad de perfeccionar sus habilidades, descubrir nuevas posibilidades de diseño y contribuir a una arquitectura de la más alta calidad.
+            </p>
+          </div>
+          <div class="flex justify-center">
+            <img src="https://walkerwarner.com/wp-content/uploads/2023/02/dsc01524-e1678394163624-1600x1015.jpg" alt="Excelencia artesanal" class="max-w-md max-h-84 w-full h-auto object-cover rounded-md shadow-lg" />
+          </div>
+        </div>
+
+        <!-- Bloque 5 -->
+        <div class="grid md:grid-cols-2 gap-8 items-center py-16">
+          <div class="flex justify-center order-2 md:order-1">
+            <img src="https://walkerwarner.com/wp-content/uploads/2022/11/63a5072-edit-1067x1600.jpg" alt="Fomentar el crecimiento" class="max-w-md max-h-84 w-full h-auto object-cover rounded-md shadow-lg" />
+          </div>
+          <div class="order-1 md:order-2">
+            <h3 class="text-xl font-semibold mb-4">Fomentar el crecimiento</h3>
+            <p class="text-gray-700">
+              Ayudamos a las personas a hacer su mejor trabajo, con el objetivo de apoyar y orientar las habilidades, intereses y objetivos únicos de todos en nuestro equipo. Hay oportunidades de aprender de mentores altamente calificados, y apoyamos activamente a los candidatos interesados en convertirse en arquitectos con licencia.
+            </p>
+          </div>
+        </div>
+
+        <!-- Bloque 6 -->
+        <div class="grid md:grid-cols-2 gap-8 items-center py-16">
+          <div>
+            <h3 class="text-xl font-semibold mb-4">Oportunidades para retribuir</h3>
+            <p class="text-gray-700">
+              Nuestro equipo de IDEAS (Inclusión, Diversidad, Equidad, Conciencia, Sostenibilidad) nos anima a ser aliados al retribuir a nuestras comunidades. Las iniciativas incluyen nuestro fondo de becas universitarias, programas de tutoría en escuelas locales y voluntariado con organizaciones comunitarias.
+            </p>
+          </div>
+          <div class="flex justify-center">
+            <img src="https://walkerwarner.com/wp-content/uploads/2023/04/dsc06531-1600x1068.jpg" alt="Retribuir a la comunidad" class="max-w-md max-h-84 w-full h-auto object-cover rounded-md shadow-lg" />
+          </div>
+        </div>
+
+      </section>
+    </div>
+
+    <div x-show="tab === 'about'" class="tab-panel">
+    <!-- Bloque de Presentación -->
+    <section class="flex flex-col md:flex-row items-center bg-gray-100 py-16 px-6 md:px-16">
+      <div class="md:w-1/2">
+        <img src="https://amazingarchitecture.com/storage/files/1/architecture-firms/walker-warner-architects/kona-village-resort/kona-village-resort-walker-warner-architects-8.jpg" alt="Presentacion" class="w-full h-auto object-cover" />
+      </div>
+      <div class="md:w-1/2 md:pl-12 mt-6 md:mt-0">
+        <p class="text-gray-700 text-lg">
+          Walker Warner es una firma de arquitectura de servicio completo especializada en diseño residencial y de hospitalidad personalizado. Fundada en 1989, la empresa está dirigida por los socios Greg Warner, Kathy Scott y Mike McCabe, y el director Brooks Walker.
+          <br><br>
+          El trabajo de la empresa se basa en nuestro <span class="underline">espíritu</span>, con un proceso de diseño moldeado por nuestra cultura y valores.
+        </p>
+      </div>
+    </section>
+
+    <!-- Premios -->
+    <section class="py-20 px-6 md:px-16 bg-white border-t border-gray-200" x-data="{ showAll: false }">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        
+        <!-- Columna izquierda: Fechas y premios -->
+        <div class="space-y-4 text-sm">
+          <!-- Premios visibles -->
+          <div class="flex gap-4">
+            <span class="font-light text-gray-500 w-16">2025</span>
+            <p class="text-gray-800">Premios LUXE RED, Arquitectura Exterior</p>
+          </div>
+          <div class="flex gap-4">
+            <span class="font-light text-gray-500 w-16">2025</span>
+            <p class="text-gray-800">Arquitectizador, A+Premios, Mención Especial, Arquitectura+Localismo</p>
+          </div>
+          <div class="flex gap-4">
+            <span class="font-light text-gray-500 w-16">2025</span>
+            <p class="text-gray-800">SARA California, Premios de Diseño, Premio al Mérito</p>
+          </div>
+          <div class="flex gap-4">
+            <span class="font-light text-gray-500 w-16">2025</span>
+            <p class="text-gray-800">SARA California, Premios de Diseño, Premio al Mérito</p>
+          </div>
+
+          <!-- Premios ocultos inicialmente -->
+          <template x-if="showAll">
+            <div class="space-y-4 mt-4">
+              <div class="flex gap-4">
+                <span class="font-light text-gray-500 w-16">2024</span>
+                <p class="text-gray-800">Premio Nacional de Arquitectura Moderna</p>
+              </div>
+              <div class="flex gap-4">
+                <span class="font-light text-gray-500 w-16">2023</span>
+                <p class="text-gray-800">Mención Honorífica AIA por Excelencia Residencial</p>
+              </div>
+              <div class="flex gap-4">
+                <span class="font-light text-gray-500 w-16">2022</span>
+                <p class="text-gray-800">Premio Global al Diseño de Hospitalidad</p>
+              </div>
+            </div>
+          </template>
+
+          <!-- Botón Ver más -->
+          <div class="mt-4">
+            <button
+              @click="showAll = !showAll"
+              class="text-sm text-gray-700 underline hover:text-black transition"
+              x-text="showAll ? 'Ver menos –' : 'Ver más +'">
+            </button>
+          </div>
+        </div>
+
+        <!-- Columna derecha: Proyectos -->
+        <div class="space-y-4 text-sm text-gray-800 text-left ml-auto">
+          <p>Wahi Lani</p>
+          <p>Pueblo de Kona</p>
+          <p>Meadowood</p>
+          <p>Residencia Carmel</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Línea de Tiempo como carrusel -->
+    <section class="py-16 bg-[#f4f5ef]">
+      <!-- Encabezado con padding -->
+      <div class="px-6 md:px-20">
+        <h3 class="uppercase text-sm text-gray-500 mb-1 text-left">Línea de tiempo</h3>
+        <h2 class="text-2xl font-light mb-8 text-left">Desde 1989 hasta hoy</h2>
+      </div>
+
+      <!-- Carrusel fuera de padding con arrastre manual y pausa al hacer hover -->
+      <div 
+        class="relative w-screen overflow-hidden left-1/2 -translate-x-1/2"
+        x-data="{ isPaused: false, startX: 0, scrollLeft: 0, isDown: false }"
+        x-init="$refs.track.style.animationPlayState = 'running'"
+        @mouseenter="$refs.track.style.animationPlayState = 'paused'; isPaused = true"
+        @mouseleave="$refs.track.style.animationPlayState = 'running'; isPaused = false"
+        @mousedown="isDown = true; startX = $event.pageX - $el.offsetLeft; scrollLeft = $el.scrollLeft"
+        @mouseup="isDown = false"
+        @mouseleave="isDown = false"
+        @mousemove="if (!isDown) return; $event.preventDefault(); const x = $event.pageX - $el.offsetLeft; const walk = (x - startX) * 2; $el.scrollLeft = scrollLeft - walk"
+      >
+        <div
+          class="flex gap-12 whitespace-nowrap animate-marquee"
+          x-ref="track"
+        >
+          <!-- Slides duplicados para loop visual perfecto -->
+          <template x-for="i in 2" :key="i">
+            <div class="flex gap-12 whitespace-nowrap">
+              <!-- Slide 1 -->
+              <div class="flex-shrink-0 w-[75vw] md:w-[40vw] flex flex-col md:flex-row gap-6 items-center">
+                <div class="w-full md:w-1/2 text-center">
+                  <img src="https://walkerwarner.com/wp-content/uploads/2023/10/kona-village-2023-df-0873-weblandscape-1600x1198.jpg" alt="Brooks y Greg" class="w-full h-48 object-cover rounded-md mx-auto" />
+                  <p class="mt-2 text-sm">Brooks y Greg</p>
+                </div>
+                <div class="w-full md:w-1/2 flex flex-col justify-center text-center md:text-left">
+                  <p class="font-semibold text-sm">1992 -</p>
+                  <p class="text-sm text-gray-700 mt-1 leading-snug block max-w-[300px] md:max-w-[360px] text-wrap">
+                    Se mudan al 835 Terry Francois Blvd. con vistas a la bahía.
+                  </p>
+                </div>
+              </div>
+
+              <!-- Slide 2 -->
+              <div class="flex-shrink-0 w-[75vw] md:w-[40vw] flex flex-col md:flex-row gap-6 items-center">
+                <div class="w-full md:w-1/2">
+                  <img src="https://amazingarchitecture.com/storage/files/1/architecture-firms/walker-warner-architects/kona-village-resort/kona-village-resort-walker-warner-architects-11.jpg" alt="Oficina 1997" class="w-full h-48 object-cover rounded-md" />
+                  <p class="mt-2 text-sm text-center">Oficina 1997</p>
+                </div>
+                <div class="w-full md:w-1/2 flex flex-col justify-center text-center md:text-left">
+                  <p class="font-semibold text-sm">1997 -</p>
+                  <p class="text-sm text-gray-700 mt-1 leading-snug block max-w-[300px] md:max-w-[360px] text-wrap">
+                    Participan en la liga de arquitectos con un equipo de softball.
+                  </p>
+                </div>
+              </div>
+
+              <!-- Slide 3 -->
+              <div class="flex-shrink-0 w-[75vw] md:w-[40vw] flex flex-col md:flex-row gap-6 items-center">
+                <div class="w-full md:w-1/2">
+                  <img src="https://amazingarchitecture.com/storage/files/1/architecture-firms/walker-warner-architects/kona-village-resort/kona-village-resort-walker-warner-architects-11.jpg" alt="Evento 2000" class="w-full h-48 object-cover rounded-md" />
+                  <p class="mt-2 text-sm text-center">Evento 2000</p>
+                </div>
+                <div class="w-full md:w-1/2 flex flex-col justify-center text-center md:text-left">
+                  <p class="font-semibold text-sm">2000 -</p>
+                  <p class="text-sm text-gray-700 mt-1 leading-snug block max-w-[300px] md:max-w-[360px] text-wrap">
+                    Celebración por 10 años de trayectoria con todo el equipo.
+                  </p>
+                </div>
+              </div>
+
+              <!-- Slide 4 -->
+              <div class="flex-shrink-0 w-[75vw] md:w-[40vw] flex flex-col md:flex-row gap-6 items-center">
+                <div class="w-full md:w-1/2">
+                  <img src="https://amazingarchitecture.com/storage/files/1/architecture-firms/walker-warner-architects/kona-village-resort/kona-village-resort-walker-warner-architects-11.jpg" alt="Premio 2008" class="w-full h-48 object-cover rounded-md" />
+                  <p class="mt-2 text-sm text-center">Premio 2008</p>
+                </div>
+                <div class="w-full md:w-1/2 flex flex-col justify-center text-center md:text-left">
+                  <p class="font-semibold text-sm">2008 -</p>
+                  <p class="text-sm text-gray-700 mt-1 leading-snug block max-w-[300px] md:max-w-[360px] text-wrap">
+                    Reciben reconocimiento nacional por innovación arquitectónica.
+                  </p>
+                </div>
+              </div>
+
+              <!-- Slide 5 -->
+              <div class="flex-shrink-0 w-[75vw] md:w-[40vw] flex flex-col md:flex-row gap-6 items-center">
+                <div class="w-full md:w-1/2">
+                  <img src="https://amazingarchitecture.com/storage/files/1/architecture-firms/walker-warner-architects/kona-village-resort/kona-village-resort-walker-warner-architects-11.jpg" alt="Crecimiento" class="w-full h-48 object-cover rounded-md" />
+                  <p class="mt-2 text-sm text-center">Nueva sede</p>
+                </div>
+                <div class="w-full md:w-1/2 flex flex-col justify-center text-center md:text-left">
+                  <p class="font-semibold text-sm">2015 -</p>
+                  <p class="text-sm text-gray-700 mt-1 leading-snug block max-w-[300px] md:max-w-[360px] text-wrap">
+                    Se inaugura una nueva oficina en San Francisco.
+                  </p>
+                </div>
+              </div>
+
+              <!-- Slide 6 -->
+              <div class="flex-shrink-0 w-[75vw] md:w-[40vw] flex flex-col md:flex-row gap-6 items-center">
+                <div class="w-full md:w-1/2">
+                  <img src="https://amazingarchitecture.com/storage/files/1/architecture-firms/walker-warner-architects/kona-village-resort/kona-village-resort-walker-warner-architects-11.jpg" alt="Actualidad" class="w-full h-48 object-cover rounded-md" />
+                  <p class="mt-2 text-sm text-center">Actualidad</p>
+                </div>
+                <div class="w-full md:w-1/2 flex flex-col justify-center text-center md:text-left">
+                  <p class="font-semibold text-sm">2024 -</p>
+                  <p class="text-sm text-gray-700 mt-1 leading-snug block max-w-[300px] md:max-w-[360px] text-wrap">
+                    Se posicionan entre los estudios más influyentes de la región.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </template>
+        </div>
+      </div>
+    </section>
+
+    </div>
+
+
+  </div>
+
+</Layout>
+
+<script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+
+
+<style>
+  .testimonios-carousel {
+    margin: 4rem auto;
+    text-align: center;
+    max-width: 800px;
+    padding: 2rem;
+    font-style: italic;
+    font-family: var(--font-poppins);
+    font-size: 1.2rem;
+    color: #444;
+    position: relative;
+    transition: opacity 0.5s ease;
+  }
+  .testimonial::before,
+  .testimonial::after {
+      content: '"';
+      font-size: 2rem;
+      color: #ccc;
+    }
+
+  .grid-equipo {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 2rem;
+    justify-items: center;
+  }
+
+  .card-equipo img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+  .card-equipo h3 {
+    margin: 0.5rem 0 0.2rem;
+    font-size: 1rem;
+    font-family: var(--font-poppins);
+  }
+  .card-equipo p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #666;
+    font-family: var(--font-poppins);
+  }
+
+
+  .filtro-nav {
+    margin-top: 2rem;
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .filtro-nav button {
+    background: none;
+    border: none;
+    font-family: var(--font-poppins);
+    font-size: 1rem;
+    padding: 8px 16px;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+  }
+  .filtro-nav button.active {
+    border-color: black;
+    font-weight: bold;
+  }
+
+  .tab-nav {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 4.8rem;
+    flex-wrap: wrap;
+    font-weight: 300;
+    font-family: 'Poppins';
+    border-bottom: 1px solid #ddd;
+    background-color: #fff;
+    padding-bottom: 0.5rem; 
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  }
+  .tab-nav button {
+    background: none;
+    border: none;
+    padding: 10px 20px;
+    font-family: var(--font-poppins);
+    font-size: .9rem;
+    cursor: pointer;
+    border-bottom: 1px solid transparent;
+    font-weight: 300;
+  }
+  .tab-nav button.active {
+    border-color: black;
+    font-weight: bold;
+  }
+
+  /* Config De paneles General */
+  .tab-panel {
+    max-width: 100%;
+    margin: 2rem auto;
+    text-align: center;
+    padding: 1rem;
+  }
+
+  .tab-panel-equipo {
+    max-width: 1450px;
+  }
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@keyframes marquee {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  animation: marquee 60s linear infinite;
+}
+
+
+@media (max-width: 768px) {
+  .contact-info-line {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+  }
+
+  .contact-title {
+    font-size: 2rem;
+  }
+
+  .progressive-form {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .next-btn {
+    align-self: flex-end;
+  }
+}
+
+</style>
